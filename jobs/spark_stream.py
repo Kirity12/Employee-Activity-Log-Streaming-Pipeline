@@ -174,9 +174,7 @@ def process_spark_df(df: DataFrame):
                 StructField("index", IntegerType(), True),
                 StructField("Login Timestamp", StringType(), True),
                 StructField("User ID", StringType(), True),
-                StructField(
-                    "Round-Trip Time [ms]", StringType(), True
-                ),  # 'nan' can be treated as a string or nullable
+                StructField("Round-Trip Time [ms]", StringType(), True),
                 StructField("IP Address", StringType(), True),
                 StructField("Country", StringType(), True),
                 StructField("Region", StringType(), True),

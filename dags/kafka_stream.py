@@ -16,7 +16,7 @@ logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s",
     handlers=[
         logging.FileHandler(log_filename),
-        logging.StreamHandler(),  # Logs also to console
+        logging.StreamHandler(),
     ],
 )
 
@@ -25,16 +25,17 @@ logging.basicConfig(
 def on_failure_callback(**context):
     task_id = context.get("task_instance").task_id
     error_message = f"Task {task_id} failed"
-    # Send an email alert
-    print(
-        f"""
+    error_message = f"""
     send_slack_webhook(
         channel=UserLoginDagFailures,
         subject=f"Airflow Task {task_id} Failed",
         html_content={error_message}
     )
     """
-    )
+
+    # Send an email alert
+    logging.error(error_message)
+    print(error_message)
 
 
 default_orgs = {
@@ -149,7 +150,7 @@ def stream_data(**context):
             )
         except Exception as e:
             logging.error(f"Task {task_id}: An error occurred: {e}")
-            continue
+            raise
 
 
 with DAG(
